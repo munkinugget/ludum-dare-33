@@ -1,4 +1,6 @@
-﻿class KickTheDoorDown {
+﻿///<refrence path="World Objects/WorldMap.ts"/>
+
+class KickTheDoorDown {
     public static Game: Phaser.Game;
     map: Phaser.Tilemap;
 
@@ -9,12 +11,19 @@
         });
     }
     preload() {
-        //KickTheDoorDown.Game.load.tilemap("Map", null, new WorldMap(0,10), Phaser.Tilemap.TILED_JSON);
         KickTheDoorDown.Game.load.image("Tiles", "images/world/tile_base.png");
+
+           
+          
+        //KickTheDoorDown.Game.load.tilemap("Map", null, world.generate(), Phaser.Tilemap.TILED_JSON);
+        
     }
+
+
     render() {
 
     }
+
     onkeyup(event) {
         switch (event.keyCode) {
             case Phaser.Keyboard.LEFT:
@@ -47,22 +56,29 @@
     }
 
     create() {
+        var world: Level;
+        world = new Level(10, 50);
+
+
+        console.debug("Starting Create physics mode = arcade");
         KickTheDoorDown.Game.physics.startSystem(Phaser.Physics.ARCADE);
-        KickTheDoorDown.Game.input.keyboard.addCallbacks(null, null, onKeyUp);
+        console.debug("Starting Create keybord callback");
+        KickTheDoorDown.Game.input.keyboard.addCallbacks(null, null, onkeyup);
+        //console.debug("Starting Add Map");
+        //this.map = KickTheDoorDown.Game.add.tilemap("Map");
 
 
 
 
+        //this.map = KickTheDoorDown.Game.add.tilemap("Map");
+        //this.map.addTilesetImage("Background", "Tiles");
 
-        this.map = KickTheDoorDown.Game.add.tilemap("Map");
-        this.map.addTilesetImage("Background", "Tiles");
-
-        this.map.createLayer("Background").resizeWorld();
-        this.map.createLayer("Midground");
-        this.map.createLayer("Foreground");
+        //this.map.createLayer("Background").resizeWorld();
+        //this.map.createLayer("Midground");
+        //this.map.createLayer("Foreground");
 
 
-        KickTheDoorDown.Game.camera.x = this.map.layers[0].widthInPixels / 2;
+        KickTheDoorDown.Game.camera.x = this.map.widthInPixels / 2;
         KickTheDoorDown.Game.camera.y = 0;
 
         KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: 0 }, 3000).
