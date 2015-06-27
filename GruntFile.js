@@ -2,7 +2,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-open');
-    grunt.loadNpmTasks('grunt-contrib-concat');
+    //grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-typescript');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -14,7 +15,7 @@ module.exports = function (grunt) {
                 }
             }
         },
-        concat: {
+        /*concat: {
             dist: {
                 src: [
                   "node_modules/phaser/dist/phaser.js",
@@ -22,6 +23,19 @@ module.exports = function (grunt) {
                 ],
                 dest: 'deploy/js/<%= pkg.name %>.js'
             }
+        },*/
+        typescript: {
+          base: {
+            src: ['src/**/*.ts'],
+            dest: 'deploy/js/<%= pkg.name %>.js',
+            options: {
+              module: 'amd', //or commonjs
+              target: 'es5', //or es3
+              basePath: 'path/to/typescript/files',
+              sourceMap: true,
+              declaration: true
+            }
+          }
         },
         watch: {
             files: 'src/**/*.js',
@@ -34,6 +48,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('default', ['concat', 'connect', 'open', 'watch']);
+    grunt.registerTask('default', ['typescript', /*'concat',*/ 'connect', 'open', 'watch']);
 
 }
