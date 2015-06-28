@@ -11,7 +11,7 @@ var KickTheDoorDown = (function () {
     KickTheDoorDown.prototype.preload = function () {
         KickTheDoorDown.Game.load.image("worldTiles", "images/world/tile_base.png");
         KickTheDoorDown.Game.load.spritesheet("doors", "images/world/tile_base.png", 48, 48);
-        KickTheDoorDown.Game.load.spritesheet("player", "images/entities/char.png", 24, 24, 6);
+        KickTheDoorDown.Game.load.spritesheet("player", "images/entities/char.png", 24, 24);
         this.cursors = KickTheDoorDown.Game.input.keyboard.createCursorKeys();
         //  Hide the un-scaled game canvas
         KickTheDoorDown.Game.canvas.style['display'] = 'none';
@@ -145,17 +145,36 @@ var Level = (function () {
     };
     return Level;
 })();
+var PlayerAnimations;
+(function (PlayerAnimations) {
+    PlayerAnimations[PlayerAnimations["Idle"] = 0] = "Idle";
+    PlayerAnimations[PlayerAnimations["Running"] = 1] = "Running";
+})(PlayerAnimations || (PlayerAnimations = {}));
 var Player = (function () {
     function Player() {
-        this.Sprite = KickTheDoorDown.Game.add.sprite(48 / 2, 48 / 2, "player");
+        this.Sprite = KickTheDoorDown.Game.add.sprite(48 / 2, 29, "player");
         this.Sprite.anchor.setTo(.5, .5);
-        this.Sprite.animations.add("Run");
-        this.Sprite.animations.play("Run", 10, true);
+        this.Sprite.animations.add(1 /* Running */.toString(), [0, 1, 2, 3, 4, 5]);
+        this.Sprite.animations.add(0 /* Idle */.toString(), [0, 6]);
+        this.PlayAnimation(1 /* Running */);
     }
     Player.prototype.MoveTo = function (newLoc) {
-        KickTheDoorDown.Game.add.tween(this.Sprite).to({
-            x: newLoc
-        }, 10, Phaser.Easing.Linear.None, true);
+        var tween = KickTheDoorDown.Game.add.tween(this.Sprite).to({ x: newLoc }, 10, Phaser.Easing.Linear.None, true);
+        //tween.onComplete;
+    };
+    Player.prototype.PlayAnimation = function (animation) {
+        switch (animation) {
+            case 0 /* Idle */:
+                this.Sprite.play(animation.toString(), 1, true);
+                break;
+            case 1 /* Running */:
+                this.Sprite.play(animation.toString(), 10, true);
+                break;
+        }
+        this.CurrentAnimation = animation;
+    };
+    Player.prototype.MovementComplete = function () {
+        this.CurrentAnimation = 0 /* Idle */;
     };
     return Player;
 })();
