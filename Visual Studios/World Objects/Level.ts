@@ -43,7 +43,7 @@
                 this.doors.add(myDoor);
             }
             else {
-                this.Map.putTile(Math.round(Math.random() * 1), i, 0, map);
+                this.Map.putTile(Math.round(Math.random() * 2), i, 0, map);
             }
         }
     }
