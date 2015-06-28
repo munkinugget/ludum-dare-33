@@ -1,20 +1,19 @@
-﻿///<refrence path="World Objects/WorldMap.ts"/>
+﻿///<refrence path="World Objects/Level.ts"/>
 
 class KickTheDoorDown {
     public static Game: Phaser.Game;
-    map: Phaser.Tilemap;
 
     constructor() {
         KickTheDoorDown.Game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', {
             create: this.create, preload:
             this.preload, render: this.render
-        });
+        },true,false);
+        
     }
-    preload() {
-        KickTheDoorDown.Game.load.image("Tiles", "images/world/tile_base.png");
 
-           
-          
+    preload() {
+        KickTheDoorDown.Game.load.image("worldTiles", "images/world/tile_base.png");
+     
         //KickTheDoorDown.Game.load.tilemap("Map", null, world.generate(), Phaser.Tilemap.TILED_JSON);
         
     }
@@ -64,25 +63,13 @@ class KickTheDoorDown {
         KickTheDoorDown.Game.physics.startSystem(Phaser.Physics.ARCADE);
         console.debug("Starting Create keybord callback");
         KickTheDoorDown.Game.input.keyboard.addCallbacks(null, null, onkeyup);
-        //console.debug("Starting Add Map");
-        //this.map = KickTheDoorDown.Game.add.tilemap("Map");
 
+        //KickTheDoorDown.Game.camera.x = KickTheDoorDown.Map.layers[0].widthInPixels / 2;
+        ////KickTheDoorDown.Game.camera.x = 0;
+        //KickTheDoorDown.Game.camera.y = 0;
 
-
-
-        //this.map = KickTheDoorDown.Game.add.tilemap("Map");
-        //this.map.addTilesetImage("Background", "Tiles");
-
-        //this.map.createLayer("Background").resizeWorld();
-        //this.map.createLayer("Midground");
-        //this.map.createLayer("Foreground");
-
-
-        KickTheDoorDown.Game.camera.x = this.map.widthInPixels / 2;
-        KickTheDoorDown.Game.camera.y = 0;
-
-        KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: 0 }, 3000).
-            to({ x: this.map.layers[0].widthInPixels }, 3000).loop().start();
+        //KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: 0 }, 3000).
+        //    to({ x: KickTheDoorDown.Map.layers[0].widthInPixels }, 3000).loop().start();
     }
 }
 
