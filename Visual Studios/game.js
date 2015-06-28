@@ -1,7 +1,7 @@
 ///<refrence path="World Objects/Level.ts"/>
 var KickTheDoorDown = (function () {
     function KickTheDoorDown() {
-        KickTheDoorDown.Game = new Phaser.Game(200, 100, Phaser.CANVAS, '', {
+        KickTheDoorDown.Game = new Phaser.Game(96, 48, Phaser.CANVAS, '', {
             create: this.create,
             preload: this.preload,
             render: this.render,
@@ -11,6 +11,7 @@ var KickTheDoorDown = (function () {
     KickTheDoorDown.prototype.preload = function () {
         KickTheDoorDown.Game.load.image("worldTiles", "images/world/tile_base.png");
         KickTheDoorDown.Game.load.spritesheet("doors", "images/world/tile_base.png", 48, 48);
+        KickTheDoorDown.Game.load.spritesheet("player", "images/entities/char.png", 24, 24, 6);
         this.cursors = KickTheDoorDown.Game.input.keyboard.createCursorKeys();
         //  Hide the un-scaled game canvas
         KickTheDoorDown.Game.canvas.style['display'] = 'none';
@@ -115,6 +116,7 @@ var Level = (function () {
     }
     Level.prototype.MoveCamera = function (augmentAmount) {
         KickTheDoorDown.Game.camera.x += augmentAmount;
+        this.Player.MoveTo(KickTheDoorDown.Game.camera.x + 48 / 2);
         //this.doors.x += augmentAmount;
         //KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: KickTheDoorDown.Game.camera.x + augmentAmount }, 1).start();
     };
@@ -125,8 +127,8 @@ var Level = (function () {
         console.debug("Creating Layers");
         var map = this.Map.create("map", this.RoomCount * 2, 1, 48, 48);
         map.resizeWorld();
-        //var doorLayer = this.Map.create("DoorLayer", this.RoomCount * 2, 1, 48, 48);
         this.doors = KickTheDoorDown.Game.add.group();
+        this.Player = new Player();
         console.debug("Putting Tiles");
         for (var i = 0; i <= this.RoomCount * 2; i++) {
             if (i % 2 != 0) {
@@ -145,7 +147,16 @@ var Level = (function () {
 })();
 var Player = (function () {
     function Player() {
+        this.Sprite = KickTheDoorDown.Game.add.sprite(48 / 2, 48 / 2, "player");
+        this.Sprite.anchor.setTo(.5, .5);
+        this.Sprite.animations.add("Run");
+        this.Sprite.animations.play("Run", 10, true);
     }
+    Player.prototype.MoveTo = function (newLoc) {
+        KickTheDoorDown.Game.add.tween(this.Sprite).to({
+            x: newLoc
+        }, 10, Phaser.Easing.Linear.None, true);
+    };
     return Player;
 })();
 //# sourceMappingURL=game.js.map

@@ -1,6 +1,5 @@
 C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\Phaser Refrences\phaser.js
 C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\Phaser Refrences\phaser.min.js
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\images\entities\char_static.png
 C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\images\world\tile_base.png
 C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\index.html
 C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\Phaser Refrences\phaser.map

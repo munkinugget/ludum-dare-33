@@ -6,7 +6,7 @@ class KickTheDoorDown {
     public static pixel= { scale: 8, canvas: null, context: null, width: 0, height: 0 };
 
     constructor() {
-        KickTheDoorDown.Game = new Phaser.Game(200, 100, Phaser.CANVAS, '', {
+        KickTheDoorDown.Game = new Phaser.Game(96, 48, Phaser.CANVAS, '', {
             create: this.create, preload:
             this.preload, render: this.render, update: this.update
         });        
@@ -16,6 +16,7 @@ class KickTheDoorDown {
     preload() {
         KickTheDoorDown.Game.load.image("worldTiles", "images/world/tile_base.png");
         KickTheDoorDown.Game.load.spritesheet("doors", "images/world/tile_base.png", 48, 48);
+        KickTheDoorDown.Game.load.spritesheet("player", "images/entities/char.png", 24, 24,6);
         this.cursors = KickTheDoorDown.Game.input.keyboard.createCursorKeys();
        
         //  Hide the un-scaled game canvas
