@@ -51,7 +51,7 @@
                 
             }
             else {
-                this.Map.putTile(Math.round(Math.random() * 1), i, 0, map);
+                this.Map.putTile(Math.round(Math.random() * 3), i, 0, map);
             }
         }
     }
