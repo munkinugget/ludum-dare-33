@@ -2,6 +2,9 @@
 bin/*
 node_modules/*
 obj/*
+Visual Studios/bin/*
+Visual Studios/obj/*
+Visual Studios/.vs/*
 *.csproj
 *.csproj.user
 *.suo
