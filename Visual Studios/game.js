@@ -6,7 +6,7 @@ var KickTheDoorDown = (function () {
             preload: this.preload,
             render: this.render,
             update: this.update
-        });
+        }, false, false);
     }
     KickTheDoorDown.prototype.preload = function () {
         KickTheDoorDown.Game.load.image("worldTiles", "images/world/tile_base.png");
@@ -58,11 +58,14 @@ var KickTheDoorDown = (function () {
             this.world.MoveCamera(1);
         else if (this.cursors.left.isDown)
             this.world.MoveCamera(-1);
+        else
+            this.world.StopMove();
+        KickTheDoorDown.Game.physics.arcade.collide(this.world.doors, this.world.Player.Sprite);
     };
     KickTheDoorDown.prototype.create = function () {
-        this.world = new Level(10, 50);
         console.debug("Starting Create physics mode = arcade");
         KickTheDoorDown.Game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.world = new Level(10, 50);
         console.debug("Starting Create keybord callback");
         KickTheDoorDown.Game.input.keyboard.addCallbacks(null, null, onkeyup);
         //KickTheDoorDown.Game.camera.x = KickTheDoorDown.Map.layers[0].widthInPixels / 2;
@@ -115,10 +118,14 @@ var Level = (function () {
         this.generate();
     }
     Level.prototype.MoveCamera = function (augmentAmount) {
-        KickTheDoorDown.Game.camera.x += augmentAmount;
-        this.Player.MoveTo(KickTheDoorDown.Game.camera.x + 48 / 2);
+        //KickTheDoorDown.Game.camera.x += augmentAmount;
+        this.Player.PlayAnimation(1 /* Running */);
+        this.Player.MoveTo(augmentAmount * 50);
         //this.doors.x += augmentAmount;
         //KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: KickTheDoorDown.Game.camera.x + augmentAmount }, 1).start();
+    };
+    Level.prototype.StopMove = function () {
+        this.Player.MoveTo(0);
     };
     Level.prototype.generate = function () {
         console.debug("creating map");
@@ -129,12 +136,15 @@ var Level = (function () {
         map.resizeWorld();
         this.doors = KickTheDoorDown.Game.add.group();
         this.Player = new Player();
+        this.Map.setCollisionBetween(0, 29, true);
         console.debug("Putting Tiles");
         for (var i = 0; i <= this.RoomCount * 2; i++) {
             if (i % 2 != 0) {
                 this.Map.putTile(10, i, 0, map);
                 var myDoor = KickTheDoorDown.Game.add.sprite((i * 48), 0, "doors", 11);
                 this.doors.add(myDoor);
+                KickTheDoorDown.Game.physics.arcade.enable(myDoor);
+                myDoor.body.immovable = true;
             }
             else {
                 this.Map.putTile(Math.round(Math.random() * 1), i, 0, map);
@@ -152,17 +162,47 @@ var PlayerAnimations;
 })(PlayerAnimations || (PlayerAnimations = {}));
 var Player = (function () {
     function Player() {
+        this.facingRight = true;
         this.Sprite = KickTheDoorDown.Game.add.sprite(48 / 2, 29, "player");
         this.Sprite.anchor.setTo(.5, .5);
         this.Sprite.animations.add(1 /* Running */.toString(), [0, 1, 2, 3, 4, 5]);
-        this.Sprite.animations.add(0 /* Idle */.toString(), [0, 6]);
-        this.PlayAnimation(1 /* Running */);
+        this.Sprite.animations.add(0 /* Idle */.toString(), [6, 7]);
+        this.PlayAnimation(0 /* Idle */);
+        KickTheDoorDown.Game.camera.follow(this.Sprite);
+        KickTheDoorDown.Game.physics.arcade.enable(this.Sprite);
+        this.Sprite.body.collideWorldBounds = true;
     }
     Player.prototype.MoveTo = function (newLoc) {
-        var tween = KickTheDoorDown.Game.add.tween(this.Sprite).to({ x: newLoc }, 10, Phaser.Easing.Linear.None, true);
-        //tween.onComplete;
+        if (newLoc > 0 && !this.facingRight) {
+            this.facingRight = true;
+            this.Sprite.scale.set(1, 1);
+        }
+        else if (newLoc < 0 && this.facingRight) {
+            this.facingRight = false;
+            this.Sprite.scale.set(-1, 1);
+        }
+        else if (newLoc == 0) {
+            this.PlayAnimation(0 /* Idle */);
+        }
+        this.Sprite.body.velocity.set(newLoc, 0);
     };
+    Object.defineProperty(Player.prototype, "X", {
+        get: function () {
+            return this.Sprite.x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Player.prototype, "Y", {
+        get: function () {
+            return this.Sprite.y;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Player.prototype.PlayAnimation = function (animation) {
+        if (this.CurrentAnimation == animation)
+            return;
         switch (animation) {
             case 0 /* Idle */:
                 this.Sprite.play(animation.toString(), 1, true);
@@ -174,7 +214,7 @@ var Player = (function () {
         this.CurrentAnimation = animation;
     };
     Player.prototype.MovementComplete = function () {
-        this.CurrentAnimation = 0 /* Idle */;
+        this.PlayAnimation(0 /* Idle */);
     };
     return Player;
 })();

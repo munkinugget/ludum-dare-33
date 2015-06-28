@@ -5,7 +5,7 @@
     private Map: Phaser.Tilemap;
     public Player: Player;
     private Scale: number;
-    private doors: Phaser.Group;
+    public doors: Phaser.Group;
 
 
     constructor(difficulty: number, rooms: number) {
@@ -17,10 +17,15 @@
     }
 
     public MoveCamera(augmentAmount: number) {        
-        KickTheDoorDown.Game.camera.x += augmentAmount;
-        this.Player.MoveTo(KickTheDoorDown.Game.camera.x+48/2);
+        //KickTheDoorDown.Game.camera.x += augmentAmount;
+
+        this.Player.PlayAnimation(PlayerAnimations.Running);
+        this.Player.MoveTo(augmentAmount*50);
         //this.doors.x += augmentAmount;
         //KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: KickTheDoorDown.Game.camera.x + augmentAmount }, 1).start();
+    }
+    public StopMove() {
+        this.Player.MoveTo(0);
     }
 
     private generate() {
@@ -33,7 +38,7 @@
         map.resizeWorld();
         this.doors = KickTheDoorDown.Game.add.group();
         this.Player = new Player();
-
+        this.Map.setCollisionBetween(0, 29, true);
         
         console.debug("Putting Tiles");
         for (var i = 0; i <= this.RoomCount*2; i++) {
@@ -41,12 +46,17 @@
                 this.Map.putTile(10, i, 0, map);
                 var myDoor = KickTheDoorDown.Game.add.sprite((i * 48), 0, "doors", 11);                
                 this.doors.add(myDoor);
+                KickTheDoorDown.Game.physics.arcade.enable(myDoor);
+                myDoor.body.immovable = true;
+                
             }
             else {
                 this.Map.putTile(Math.round(Math.random() * 1), i, 0, map);
             }
         }
     }
+    
+
 
     public Update() {
 

@@ -9,7 +9,7 @@ class KickTheDoorDown {
         KickTheDoorDown.Game = new Phaser.Game(96, 48, Phaser.CANVAS, '', {
             create: this.create, preload:
             this.preload, render: this.render, update: this.update
-        });        
+        },false,false);        
     }
 
 
@@ -75,15 +75,21 @@ class KickTheDoorDown {
             this.world.MoveCamera(1);
         else if (this.cursors.left.isDown)
             this.world.MoveCamera(-1);
+        else
+            this.world.StopMove();
+
+        KickTheDoorDown.Game.physics.arcade.collide(this.world.doors, this.world.Player.Sprite);
+            
     }
 
     create() {
+        console.debug("Starting Create physics mode = arcade");
+        KickTheDoorDown.Game.physics.startSystem(Phaser.Physics.ARCADE);
        
         this.world = new Level(10, 50);
 
 
-        console.debug("Starting Create physics mode = arcade");
-        KickTheDoorDown.Game.physics.startSystem(Phaser.Physics.ARCADE);
+        
         console.debug("Starting Create keybord callback");
         KickTheDoorDown.Game.input.keyboard.addCallbacks(null, null, onkeyup);
 
