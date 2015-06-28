@@ -18,6 +18,7 @@ class Player {
         this.PlayAnimation(PlayerAnimations.Idle);
         KickTheDoorDown.Game.camera.follow(this.Sprite);
         KickTheDoorDown.Game.physics.arcade.enable(this.Sprite);
+        this.Sprite.body.setSize(12,24);
         this.Sprite.body.collideWorldBounds = true;
 
     }

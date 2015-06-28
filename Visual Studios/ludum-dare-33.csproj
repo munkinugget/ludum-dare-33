@@ -33,6 +33,7 @@
     <Content Include="app.css" />
     <Content Include="images\entities\char.png" />
     <Content Include="images\entities\char_static.png" />
+    <Content Include="images\world\doors.png" />
     <Content Include="images\world\tile_base.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -44,7 +44,7 @@
         for (var i = 0; i <= this.RoomCount*2; i++) {
             if (i % 2 != 0) {
                 this.Map.putTile(10, i, 0, map);
-                var myDoor = KickTheDoorDown.Game.add.sprite((i * 48), 0, "doors", 11);                
+                var myDoor = KickTheDoorDown.Game.add.sprite((i * 48) + 22, 0, "doors", Math.random()*7);                
                 this.doors.add(myDoor);
                 KickTheDoorDown.Game.physics.arcade.enable(myDoor);
                 myDoor.body.immovable = true;
