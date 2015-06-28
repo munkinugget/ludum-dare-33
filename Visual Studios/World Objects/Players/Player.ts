@@ -1,6 +1,7 @@
 ﻿enum PlayerAnimations {
     Idle,
-    Running
+    Running,
+    Kick
 }
 
 class Player {
@@ -15,6 +16,8 @@ class Player {
         this.Sprite.anchor.setTo(.5, .5);
         this.Sprite.animations.add(PlayerAnimations.Running.toString(), [0, 1, 2, 3, 4, 5]);
         this.Sprite.animations.add(PlayerAnimations.Idle.toString(), [6, 7]);
+        this.Sprite.animations.add(PlayerAnimations.Kick.toString(), [12]);
+
         this.PlayAnimation(PlayerAnimations.Idle);
         KickTheDoorDown.Game.camera.follow(this.Sprite);
         KickTheDoorDown.Game.physics.arcade.enable(this.Sprite);
@@ -48,16 +51,31 @@ class Player {
 
     public PlayAnimation(animation: PlayerAnimations) {
         if (this.CurrentAnimation == animation) return;
-
+        var playSpeed: number;
+        var loop: boolean;
         switch (animation) {
             case PlayerAnimations.Idle:
-                this.Sprite.play(animation.toString(), 1, true);
+                playSpeed = 2;
+                loop = true;
                 break;
             case PlayerAnimations.Running:
-                this.Sprite.play(animation.toString(), 10, true);
+                playSpeed = 10;
+                loop = true;
                 break;
+            case PlayerAnimations.Kick:
+                playSpeed = 1;
+                loop = false;
+                break;
+
         }
 
+        function revert(context: Player) {
+            console.debug("GOT HERE");
+            context.Sprite.play(PlayerAnimations.Idle.toString(), 1, true);
+        }
+
+        var an = this.Sprite.play(animation.toString(), playSpeed, loop);
+        an.onComplete.add(function () { revert(this) });
         this.CurrentAnimation = animation;
     }
 

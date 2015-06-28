@@ -47,40 +47,21 @@ class KickTheDoorDown {
         
     }
 
-    onkeyup(event) {
-        switch (event.keyCode) {            
-            case Phaser.Keyboard.ONE:
-                break;
-            case Phaser.Keyboard.TWO:
-                break;
-            case Phaser.Keyboard.THREE:
-                break;
-            case Phaser.Keyboard.FOUR:
-                break;
-            case Phaser.Keyboard.FIVE:
-                break;
-            case Phaser.Keyboard.SIX:
-                break;
-            case Phaser.Keyboard.SEVEN:
-                break;
-            case Phaser.Keyboard.EIGHT:
-                break;
-            case Phaser.Keyboard.NINE:
-                break;
-        }
-    }
+   
 
     update() {
         if (this.cursors.right.isDown)
             this.world.MoveCamera(1);
         else if (this.cursors.left.isDown)
             this.world.MoveCamera(-1);
-        else
-            this.world.StopMove();
+        //else if (this.world.Player.CurrentAnimation != PlayerAnimations.Idle)
+        //    this.world.StopMove();
 
         KickTheDoorDown.Game.physics.arcade.collide(this.world.doors, this.world.Player.Sprite);
             
     }
+
+   
 
     create() {
         console.debug("Starting Create physics mode = arcade");
@@ -88,10 +69,15 @@ class KickTheDoorDown {
        
         this.world = new Level(10, 50);
 
-
+        function kick() {
+            console.debug("Spacebar Pressed");
+            this.world.Player.PlayAnimation(PlayerAnimations.Kick);
+        }
         
         console.debug("Starting Create keybord callback");
-        KickTheDoorDown.Game.input.keyboard.addCallbacks(null, null, onkeyup);
+        var key1 = KickTheDoorDown.Game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        key1.onDown.add(kick, this);
+
 
         //KickTheDoorDown.Game.camera.x = KickTheDoorDown.Map.layers[0].widthInPixels / 2;
         ////KickTheDoorDown.Game.camera.x = 0;
