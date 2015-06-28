@@ -4,6 +4,8 @@
     private Doors: Door[];
     private Map: Phaser.Tilemap;
     public Player: Player;
+    private Scale: number;
+    private doors: Phaser.Group;
 
 
     constructor(difficulty: number, rooms: number) {
@@ -14,7 +16,11 @@
         this.generate();
     }
 
-
+    public MoveCamera(augmentAmount: number) {
+        KickTheDoorDown.Game.camera.x += augmentAmount;
+        //this.doors.x += augmentAmount;
+        //KickTheDoorDown.Game.add.tween(KickTheDoorDown.Game.camera).to({ x: KickTheDoorDown.Game.camera.x + augmentAmount }, 1).start();
+    }
 
     private generate() {
         console.debug("creating map");
@@ -22,20 +28,23 @@
         
         this.Map.addTilesetImage('tile', 'worldTiles', 48, 48, 0, 0);
         console.debug("Creating Layers");
-        var background = this.Map.create("Background", this.RoomCount*2, 1, 48, 48);
-        var doorLayer = this.Map.create("DoorLayer", this.RoomCount * 2, 1, 48, 48);
-      
-        //background.setScale(10, 10);
-        background.resizeWorld();
+        var map = this.Map.create("map", this.RoomCount * 2, 1, 48, 48);
+        map.resizeWorld();
+        //var doorLayer = this.Map.create("DoorLayer", this.RoomCount * 2, 1, 48, 48);
+        this.doors = KickTheDoorDown.Game.add.group();
+        
+     
         
         console.debug("Putting Tiles");
         for (var i = 0; i <= this.RoomCount*2; i++) {
-            if (i % 2 == 0) {
-                this.Map.putTile(10, i, 0, background);
-                this.Map.putTile(11, i, 0, doorLayer);
+            if (i % 2 != 0) {
+                this.Map.putTile(10, i, 0, map);
+                var myDoor = KickTheDoorDown.Game.add.sprite((i * 48), 0, "doors", 11);
+                
+                this.doors.add(myDoor);
             }
             else {
-                this.Map.putTile(Math.round(Math.random() * 1), i, 0, background);
+                this.Map.putTile(Math.round(Math.random() * 1), i, 0, map);
             }
         }
     }

@@ -1,38 +1,53 @@
 ﻿///<refrence path="World Objects/Level.ts"/>
-
 class KickTheDoorDown {
     public static Game: Phaser.Game;
+    private world: Level;
+    private cursors: Phaser.CursorKeys;
+    public static pixel= { scale: 8, canvas: null, context: null, width: 0, height: 0 };
 
     constructor() {
-        KickTheDoorDown.Game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', {
+        KickTheDoorDown.Game = new Phaser.Game(200, 100, Phaser.CANVAS, '', {
             create: this.create, preload:
-            this.preload, render: this.render
-        },true,false);
-        
+            this.preload, render: this.render, update: this.update
+        });        
     }
+
 
     preload() {
         KickTheDoorDown.Game.load.image("worldTiles", "images/world/tile_base.png");
-     
-        //KickTheDoorDown.Game.load.tilemap("Map", null, world.generate(), Phaser.Tilemap.TILED_JSON);
+        KickTheDoorDown.Game.load.spritesheet("doors", "images/world/tile_base.png", 48, 48);
+        this.cursors = KickTheDoorDown.Game.input.keyboard.createCursorKeys();
+       
+        //  Hide the un-scaled game canvas
+        KickTheDoorDown.Game.canvas.style['display'] = 'none';
+
+
+        //  Create our scaled canvas. It will be the size of the game * whatever scale value you've set
+        KickTheDoorDown.pixel.canvas = Phaser.Canvas.create(KickTheDoorDown.Game.width * KickTheDoorDown.pixel.scale, KickTheDoorDown.Game.height * KickTheDoorDown.pixel.scale);
+ 
+        //  Store a reference to the Canvas Context
+        KickTheDoorDown.pixel.context = KickTheDoorDown.pixel.canvas.getContext('2d');
+
+        //  Add the scaled canvas to the DOM
+        Phaser.Canvas.addToDOM(KickTheDoorDown.pixel.canvas, document.body);
         
+        //  Disable smoothing on the scaled canvas
+        Phaser.Canvas.setSmoothingEnabled(KickTheDoorDown.pixel.context, false);
+ 
+        //  Cache the width/height to avoid looking it up every render
+        KickTheDoorDown.pixel.width = KickTheDoorDown.pixel.canvas.width;
+        KickTheDoorDown.pixel.height = KickTheDoorDown.pixel.canvas.height;
     }
 
 
     render() {
-
+        //Every loop we need to render the un-scaled game canvas to the displayed scaled canvas:  
+        KickTheDoorDown.pixel.context.drawImage(KickTheDoorDown.Game.canvas, 0, 0, KickTheDoorDown.Game.width, KickTheDoorDown.Game.height, 0, 0, KickTheDoorDown.pixel.width, KickTheDoorDown.pixel.height);
+        
     }
 
     onkeyup(event) {
-        switch (event.keyCode) {
-            case Phaser.Keyboard.LEFT:
-                break;
-            case Phaser.Keyboard.RIGHT:
-                break;
-            case Phaser.Keyboard.UP:
-                break;
-            case Phaser.Keyboard.DOWN:
-                break;
+        switch (event.keyCode) {            
             case Phaser.Keyboard.ONE:
                 break;
             case Phaser.Keyboard.TWO:
@@ -54,9 +69,16 @@ class KickTheDoorDown {
         }
     }
 
+    update() {
+        if (this.cursors.right.isDown)
+            this.world.MoveCamera(1);
+        else if (this.cursors.left.isDown)
+            this.world.MoveCamera(-1);
+    }
+
     create() {
-        var world: Level;
-        world = new Level(10, 50);
+       
+        this.world = new Level(10, 50);
 
 
         console.debug("Starting Create physics mode = arcade");
