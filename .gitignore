@@ -2,6 +2,7 @@
 bin/*
 node_modules/*
 obj/*
+*.csproj
 *.csproj.user
 *.suo
 .idea/*
