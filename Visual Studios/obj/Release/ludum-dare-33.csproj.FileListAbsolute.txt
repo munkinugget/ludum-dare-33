@@ -1,9 +1,0 @@
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\Phaser Refrences\phaser.js
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\Phaser Refrences\phaser.min.js
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\index.html
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\Phaser Refrences\phaser.map
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\ludum-dare-33.dll.config
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\ludum-dare-33.dll
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\bin\ludum-dare-33.pdb
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\obj\Release\ludum-dare-33.dll
-C:\Users\Danny\Documents\GitHub\ludum-dare-33\ludum-dare-33\Visual Studios\obj\Release\ludum-dare-33.pdb

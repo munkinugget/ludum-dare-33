@@ -5,6 +5,7 @@ obj/*
 Visual Studios/bin/*
 Visual Studios/obj/*
 Visual Studios/.vs/*
+Visual Studios/game.js
 *.csproj
 *.csproj.user
 *.suo
