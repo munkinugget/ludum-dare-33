@@ -2,6 +2,10 @@
 bin/*
 node_modules/*
 obj/*
+Visual Studio/.vs/*
+Visual Studio/bin/*
+Visual Studio/obj/*
+Visual Studio/game.js
 *.csproj.user
 *.suo
 .idea/*
